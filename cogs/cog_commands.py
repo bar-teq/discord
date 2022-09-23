@@ -8,13 +8,17 @@ class Cogcommands(commands.Cog):
 
     @commands.Cog.listener()
     async def on_ready(self):
-        print("cog commands loaded")
+        print("COMMANDS loaded")
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        if message.content == "lol":
-            await message.delete()
-            await message.channel.send("smieszne w chuj")
+    @commands.command()
+    @commands.has_permissions(administrator=True)
+    async def purge(self, ctx):
+        await ctx.channel.purge(limit=5)
+
+    @commands.command()
+    async def papiez(self, ctx):
+        await ctx.message.delete()
+        await ctx.channel.send('https://tenor.com/view/jp2gmd-pope-dance-gif-8448985')
 
 
 async def setup(bot: commands.Bot):
