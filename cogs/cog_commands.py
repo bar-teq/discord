@@ -12,13 +12,19 @@ class Cogcommands(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def purge(self, ctx):
-        await ctx.channel.purge(limit=5)
+    async def purge(self, ctx, no_of_lines=5):
+        await ctx.channel.purge(limit=no_of_lines)
+
+    # @commands.command()
+    # async def papiez(self, ctx):
+    #     await ctx.message.delete()
+    #     await ctx.channel.send('https://tenor.com/view/jp2gmd-pope-dance-gif-8448985')
 
     @commands.command()
-    async def papiez(self, ctx):
-        await ctx.message.delete()
-        await ctx.channel.send('https://tenor.com/view/jp2gmd-pope-dance-gif-8448985')
+    async def add_cytat(self, ctx, cytat):
+        with open('d:/python/discord/links/cytat.txt', 'a') as f:
+            f.write(f"{cytat} \n")
+        await ctx.channel.send('cytat dodany')
 
 
 async def setup(bot: commands.Bot):
