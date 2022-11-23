@@ -1,5 +1,6 @@
 import discord
 from discord.ext import tasks, commands
+import random
 
 
 class Cogcommands(commands.Cog):
@@ -22,9 +23,15 @@ class Cogcommands(commands.Cog):
 
     @commands.command()
     async def add_cytat(self, ctx, cytat):
-        with open('d:/python/discord/links/cytat.txt', 'a') as f:
+        with open('/home/carmel/discobot/links/cytat.txt', 'a') as f:
             f.write(f"{cytat} \n")
         await ctx.channel.send('cytat dodany')
+
+    @commands.command()
+    async def cytat(self, ctx):
+        with open("/home/carmel/discobot/links/cytat.txt", "r") as f:
+            urls = f.readlines()
+            await ctx.channel.send(random.choice(urls))
 
 
 async def setup(bot: commands.Bot):

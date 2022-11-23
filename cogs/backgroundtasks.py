@@ -1,6 +1,9 @@
 import discord
 from discord.ext import tasks, commands
 import requests
+import random
+
+eth_price_old = 0
 
 
 class Backgroundtasks(commands.Cog):
@@ -10,9 +13,10 @@ class Backgroundtasks(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         self.status.start()
+        # self.lets_talk.start()
         print('BACKGROUND TASK loaded')
         await self.bot.change_presence(status=discord.Status.online, activity=discord.Activity(
-            type=discord.ActivityType.watching, name=f"eth ↖️"))
+            type=discord.ActivityType.watching, name="eth ↖️"))
 
     @tasks.loop(seconds=60)
     async def status(self):
@@ -22,8 +26,23 @@ class Backgroundtasks(commands.Cog):
         eth_price = data[0]['current_price']
         for guild in self.bot.guilds:
             await guild.me.edit(nick=f"{eth_price}")
+        global eth_price_old
+        if eth_price > eth_price_old:
+            await self.bot.change_presence(status=discord.Status.online, activity=discord.Activity(
+                type=discord.ActivityType.watching, name="eth ⏫"))
+        elif eth_price < eth_price_old:
+            await self.bot.change_presence(status=discord.Status.online, activity=discord.Activity(
+                type=discord.ActivityType.watching, name="eth ⏬"))
+        else:
+            await self.bot.change_presence(status=discord.Status.online, activity=discord.Activity(
+                type=discord.ActivityType.watching, name="eth ⬅️"))
+        eth_price_old = eth_price
 
-
+    # @tasks.loop(seconds=300)
+    # async def lets_talk(self):
+    #     with open("d:/python/discord/links/cytat.txt", "r") as f:
+    #         urls = f.readlines()
+    #         await self.bot.get_channel(1015300311826583552).send(random.choice(urls))
 # @bot.event
 # async def on_ready():
 #     # (name='test'))
